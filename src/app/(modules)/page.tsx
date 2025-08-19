@@ -13,6 +13,7 @@ import {
   Popconfirm,
 } from "antd";
 import Axios from "@/libs/axios";
+import ModalTable from "../shared/components/ModalTable";
 
 const { Title } = Typography;
 
@@ -30,6 +31,10 @@ export default function NeonPage() {
   const [isModalOpen, setIsModalOpen] = useState({
     isShow: false,
     action: "",
+  });
+  const [isModalOpenTable, setIsModalOpenTable] = useState({
+    isShow: false,
+    database: "",
   });
   const [oldDatabaseName, setOldDatabaseName] = useState("");
   const [form] = Form.useForm();
@@ -65,7 +70,7 @@ export default function NeonPage() {
 
   const columns = [
     {
-      title: "Database id",
+      title: "id",
       dataIndex: "id",
       key: "id",
     },
@@ -121,6 +126,18 @@ export default function NeonPage() {
               ลบ
             </Button>
           </Popconfirm>
+          <Button
+            type="default"
+            size="small"
+            onClick={() =>
+              setIsModalOpenTable({
+                isShow: true,
+                database: record?.name,
+              })
+            }
+          >
+            ตาราง
+          </Button>
         </div>
       ),
     },
@@ -219,6 +236,16 @@ export default function NeonPage() {
           </Form.Item>
         </Form>
       </Modal>
+      <ModalTable
+        database={isModalOpenTable?.database}
+        open={isModalOpenTable.isShow}
+        onClose={(open) =>
+          setIsModalOpenTable({
+            database: "",
+            isShow: open,
+          })
+        }
+      />
     </Card>
   );
 }

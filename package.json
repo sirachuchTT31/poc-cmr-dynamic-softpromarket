@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sequelize/postgres": "^7.0.0-alpha.46",
     "antd": "^5.27.0",
     "axios": "^1.11.0",
     "next": "15.4.6",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
