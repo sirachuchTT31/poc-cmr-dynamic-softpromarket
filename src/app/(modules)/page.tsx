@@ -99,7 +99,7 @@ export default function NeonPage() {
             size="small"
             onClick={() => handleUpdate(record)}
           >
-            แก้ไข
+            Edit
           </Button>
           <Popconfirm
             title={`คุณต้องการลบใช่หรือไม่ ?`}
@@ -123,7 +123,7 @@ export default function NeonPage() {
             }}
           >
             <Button size="small" danger>
-              ลบ
+              Delete
             </Button>
           </Popconfirm>
           <Button
@@ -136,7 +136,7 @@ export default function NeonPage() {
               })
             }
           >
-            ตาราง
+            Table
           </Button>
         </div>
       ),
@@ -206,7 +206,7 @@ export default function NeonPage() {
       style={{ margin: 24 }}
       extra={
         <Button type="primary" onClick={openModal}>
-          สร้าง
+          Create
         </Button>
       }
     >
@@ -236,16 +236,18 @@ export default function NeonPage() {
           </Form.Item>
         </Form>
       </Modal>
-      <ModalTable
-        database={isModalOpenTable?.database}
-        open={isModalOpenTable.isShow}
-        onClose={(open) =>
-          setIsModalOpenTable({
-            database: "",
-            isShow: open,
-          })
-        }
-      />
+      {isModalOpenTable.isShow ? (
+        <ModalTable
+          database={isModalOpenTable?.database}
+          open={isModalOpenTable.isShow}
+          onClose={(open) =>
+            setIsModalOpenTable({
+              database: "",
+              isShow: open,
+            })
+          }
+        />
+      ) : null}
     </Card>
   );
 }

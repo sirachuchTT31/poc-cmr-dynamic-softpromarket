@@ -13,6 +13,8 @@ import React from "react";
 import Axios from "@/libs/axios";
 import Title from "antd/es/typography/Title";
 import { ColumnType } from "antd/es/table/interface";
+import ModalColumn from "./ModalColumn";
+import ModalRow from "./ModalRow";
 
 interface NeonTable {
   table: string;
@@ -35,6 +37,16 @@ export default function ModalTable({
   const [isModalOpen, setIsModalOpen] = React.useState({
     isShow: false,
     action: "",
+  });
+  const [isModalOpenColumn, setIsModalOpenColumn] = React.useState({
+    isShow: false,
+    database: "",
+    table: "",
+  });
+  const [isModalOpenRows, setIsModalOpenRows] = React.useState({
+    isShow: false,
+    database: "",
+    table: "",
   });
   const [form] = Form.useForm();
   const [oldTable, setOldTable] = React.useState("");
@@ -169,7 +181,7 @@ export default function ModalTable({
             size="small"
             onClick={() => handleUpdate(record)}
           >
-            แก้ไข
+            Edit
           </Button>
           <Popconfirm
             title={`คุณต้องการลบใช่หรือไม่ ?`}
@@ -181,11 +193,38 @@ export default function ModalTable({
             }}
           >
             <Button size="small" danger>
-              ลบ
+              Delete
             </Button>
           </Popconfirm>
-          <Button type="default" size="small">
-            ตาราง
+          <Button
+            type="default"
+            size="small"
+            color="cyan"
+            variant="outlined"
+            onClick={() =>
+              setIsModalOpenColumn({
+                isShow: true,
+                database,
+                table: record.table,
+              })
+            }
+          >
+            Columns
+          </Button>
+          <Button
+            type="default"
+            size="small"
+            color="purple"
+            variant="outlined"
+            onClick={() =>
+              setIsModalOpenRows({
+                isShow: true,
+                database,
+                table: record.table,
+              })
+            }
+          >
+            Rows & Column
           </Button>
         </div>
       ),
@@ -207,7 +246,7 @@ export default function ModalTable({
             type="primary"
             onClick={() => setIsModalOpen({ isShow: true, action: "create" })}
           >
-            สร้าง
+            Create
           </Button>
         </Flex>
         <Title level={3}>Table</Title>
@@ -236,6 +275,34 @@ export default function ModalTable({
           </Form.Item>
         </Form>
       </Modal>
+      {isModalOpenColumn.isShow ? (
+        <ModalColumn
+          onClose={() => {
+            setIsModalOpenColumn({
+              database: "",
+              isShow: false,
+              table: "",
+            });
+          }}
+          database={isModalOpenColumn.database}
+          open={isModalOpenColumn.isShow}
+          table={isModalOpenColumn.table}
+        />
+      ) : null}
+      {isModalOpenRows.isShow ? (
+        <ModalRow
+          onClose={() => {
+            setIsModalOpenRows({
+              database: "",
+              isShow: false,
+              table: "",
+            });
+          }}
+          database={isModalOpenRows.database}
+          open={isModalOpenRows.isShow}
+          table={isModalOpenRows.table}
+        />
+      ) : null}
     </>
   );
 }

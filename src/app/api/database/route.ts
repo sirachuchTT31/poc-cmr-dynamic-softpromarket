@@ -6,7 +6,6 @@ const apiKey = process.env.NEON_API_KEY;
 const projectKey = process.env.NEON_API_PROJECT_KEY;
 const branchKey = process.env.NEON_API_BRANCH_KEY;
 
-// สร้าง URL โดยใช้ค่าจาก .env
 const url = `${baseUrl}/projects/${projectKey}/branches/${branchKey}/databases`;
 
 export async function GET() {
