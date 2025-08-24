@@ -134,7 +134,7 @@ export default function ModalColumn({
       } else {
         const values = await form.validateFields();
         const payload = {
-          newName: values?.name,
+          newName: values?.columnName,
           oldName: oldColumn,
           databaseName: database,
           tableName: table,

@@ -81,22 +81,44 @@ export async function PUT(req: Request) {
   const db = createSequelize(databaseName);
 
   try {
-    if (newName) {
+    if (newName !== oldName) {
       await db.query(
         `ALTER TABLE "${tableName}" RENAME COLUMN "${oldName}" TO "${newName}";`
       );
     }
 
+    // if (newType) {
+    //   let using = "";
+    //   if (newType === "INTEGER" || newType === "BIGINT") {
+    //     let column = "";
+    //     if (newName) {
+    //       column = newName;
+    //     } else {
+    //       column = oldName;
+    //     }
+    //     using = `USING "${column}"::${newType.toLowerCase()}`;
+    //   }
+    //   await db.query(
+    //     `ALTER TABLE "${tableName}" ALTER COLUMN "${
+    //       newName || oldName
+    //     }" TYPE ${newType} ${using};`
+    //   );
+    // }
     if (newType) {
-      let using = "";
-      if (newType === "INTEGER" || newType === "BIGINT") {
-        using = `USING "${newName || oldName}"::${newType.toLowerCase()}`;
+      const columnName = newName || oldName;
+      let usingClause = "";
+
+      if (
+        ["INTEGER", "BIGINT", "NUMERIC", "REAL", "DOUBLE PRECISION"].includes(
+          newType.toUpperCase()
+        )
+      ) {
+        usingClause = `USING "${columnName}"::${newType}`;
       }
-      await db.query(
-        `ALTER TABLE "${tableName}" ALTER COLUMN "${
-          newName || oldName
-        }" TYPE ${newType} ${using};`
-      );
+
+      const sql = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" TYPE ${newType} ${usingClause};`;
+
+      await db.query(sql);
     }
 
     return NextResponse.json({
